@@ -10,6 +10,8 @@ const dotenv = require('dotenv');
 
 const userRoutes = require('./src/routes/userRoutes');
 const hobbieRoutes = require('./src/routes/hobbieRoutes');
+const positionRoutes = require('./src/routes/positionRoutes');
+const relationUserRoutes = require('./src/routes/relationUserRoutes');
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -32,6 +34,8 @@ app.use((req, res, next) => {
 // Routes
 app.use(userRoutes);
 app.use(hobbieRoutes);
+app.use(positionRoutes);
+app.use(relationUserRoutes);
 
 
 app.listen(app.get('port'), () => {

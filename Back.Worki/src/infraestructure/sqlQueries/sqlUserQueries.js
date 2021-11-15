@@ -1,16 +1,16 @@
 const sqlQueries = {
 
-    CREATE_PROJECT:
-        'INSERT INTO project SET ?',
+    CREATE_USER:
+        'INSERT INTO user SET ?',
 
-    UPDATE_PROJECT:
-        'UPDATE project set ? WHERE id_project = ?',
+    UPDATE_USER:
+        'UPDATE user set ? WHERE id_user = ?',
 
-    GET_PROJECT_BY_ID:
-        'SELECT * FROM project WHERE id_project = ?',
+    GET_USER_BY_ID:
+        'SELECT * FROM user WHERE id_user = ?',
 
-    GET_PROJECTS:
-        'SELECT * FROM project',
+    GET_USERS:
+        'SELECT * FROM user',
 
 };
 module.exports = sqlQueries;

@@ -1,13 +1,13 @@
 const pool = require('../../../../config/database');
 const sqlQueries = require('../../sqlQueries/sqlUserQueries');
 
-const createUser = async (params) => {
+const updateUser = async (params, id) => {
     try {
-        const result = await pool.query(sqlQueries.CREATE_USER, params);
+        const result = await pool.query(sqlQueries.UPDATE_USER, [params, id]);
         return result;
     } catch (error) {
         throw error;
     }
 };
 
-module.exports = createUser;
+module.exports = updateUser;
