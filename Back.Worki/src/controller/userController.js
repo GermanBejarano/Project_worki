@@ -1,89 +1,115 @@
 const response = require('./responses/responses');
 const userQueries = require('../infraestructure/queries/userQueries/usersQueriesModule');
+const companyQueries = require('../infraestructure/queries/companyQueries/companyQueriesModule');
+const transactionCommands = require('../infraestructure/queries/dBTransactionQueries/transactionCommandsModule');
+const userDTO = require('../infraestructure/model/user/userDTO');
+const userUpdateDTO = require('../infraestructure/model/user/userUpdateDTO');
 
+exports.getUsers = async (req, res, next) => {
+    var result = {};
+    try {
+        const userResult = await userQueries.getUsers();
+
+        result.state = true;
+        result.users = userResult;
+        response.success(req, res, result, 201, 'successfully!');
+    } catch (error) {
+        console.log(error.message);
+        response.error(req, res, error.message, 400, 'Error');
+    }
+};
+
+exports.getUserById = async (req, res, next) => {
+    var result = {};
+    try {
+        const { id } = req.params;
+        let Id = parseInt(id);
+        const userResult = await userQueries.getUserById(Id);
+        let user = userResult[0];
+
+        result.state = true;
+        result.user = user;
+        response.success(req, res, result, 201, 'successfully!');
+    } catch (error) {
+        console.log(error.message);
+        response.error(req, res, error.message, 400, 'Error');
+    }
+};
 
 exports.createUser = async (req, res, next) => {
+    var result = {};
     try {
-        const { name, description, start_date, end_date } = req.body;
+        const { name, lastname, email, pass, rol, nit_company } = req.body;
 
-        const newProject = {
-            name: name,
-            description: description,
-            start_date: start_date,
-            end_date: end_date,
-            id_general_state: 1,
-            created: new Date(),
-            createdby: req.user.name,
-            updated: null,
-            updatedby: null
-        };
-        // console.log('REQ3: ' + JSON.stringify(newProject));
-        // console.log('REQ2: ' + JSON.stringify(req.user, getCircularReplacer()));
-        // const projects = await projectQueries.createProject(newProject);
+        const companyResult = await companyQueries.getCompanyByNit(nit_company);
+        if (companyResult.length == 0)
+            throw new Error('Company not exists');
 
-        response.success(req,res, '',201,'successfully! ');
+        const companyId = userResult[0].id_company;
+
+        const userRecord = userDTO(
+            name,
+            lastname,
+            email,
+            pass,
+            rol,
+            companyId
+        );
+
+        await transactionCommands.beginTransaction();
+        const userResult = await userQueries.createUser(userRecord);
+        console.log('REQ3: ' + JSON.stringify(userResult));
+        console.log('REQ2: ' + JSON.stringify(req, getCircularReplacer()));
+        const userId = userResult[0];
+        await transactionCommands.commitTransaction();
+
+        result.state = true;
+        result.userid = userId;
+        response.success(req, res, result, 201, 'successfully! ');
     } catch (error) {
-        response.error(req, res, 'Error', 400, error.message);
-        console.log(error);
+        console.log(error.message);
+        await transactionCommands.rollbackTransaction();
+        response.error(req, res, error.message, 400, 'Error');
     }
 };
 
-
-
-exports.editProject = async (req, res, next) => {
-    try {
-        const {id} = req.params;
-        const { name, description, start_date, end_date } = req.body;
-
-        const start = start_date != '' ? start_date : undefined;
-        const end = end_date != '' ? end_date : undefined;
-
-        console.log('HELLOO: ' + end);
-        const updateProject = {
-            name: name,
-            description: description,
-            start_date: start,
-            end_date: end,
-            updated: new Date(),
-            updatedby: req.user.name
-        };
-        console.log('REQ3: ' + JSON.stringify(updateProject));
-        const projects = await projectQueries.updateProject(updateProject, id);
-
-        response.success(req,res, '',201,'successfully! ');
-    } catch (error) {
-        response.error(req, res, 'Error', 400, error.message);
-        console.log(error);
-    }
-};
-
-exports.getProjectById = async (req, res, next) => {
+exports.updateUser = async (req, res, next) => {
+    var result = {};
     try {
         const { id } = req.params;
-        let Id = parseInt(id);
-        const resultProject = await projectQueries.getProjectById(Id);
-        let project = resultProject[0];
-        console.log('PRO:: '+JSON.stringify(project));
+        const { name, lastname, email, pass, rol, companyid, img, state, professional_tastes, not_bother, id_position } = req.body;
 
-        response.success(req,res, project ,201,'successfully!');
+        const consultUser = await userQueries.getUserById(id);
+        if (consultUser.length == 0)
+            throw new Error('User not exists');
+
+        const user = consultUser[0];
+
+        const userRecord = userUpdateDTO(
+            name,
+            lastname,
+            email,
+            pass,
+            rol,
+            companyid,
+            img,
+            state,
+            professional_tastes,
+            not_bother,
+            id_position
+        );
+
+        await transactionCommands.beginTransaction();
+        const userResult = await userQueries.createUser(userRecord, id);
+        console.log('REQ3: ' + JSON.stringify(userResult));
+        await transactionCommands.commitTransaction();
+
+        result.state = true;
+        response.success(req, res, result, 201, 'successfully! ');
     } catch (error) {
-        response.error(req, res, 'Error', 400, error.message);
-        console.log(error);
-    }
-};
-
-exports.getProject = async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        let Id = parseInt(id);
-        const resultProject = await projectQueries.getProjectById(Id);
-        let project = resultProject[0];
-        console.log('PRO:: '+JSON.stringify(project));
-
-        response.success(req,res, project ,201,'successfully!');
-    } catch (error) {
-        response.error(req, res, 'Error', 400, error.message);
-        console.log(error);
+        console.log(error.message);
+        await transactionCommands.rollbackTransaction();
+        response.error(req, res, error.message, 400, 'Error');
     }
 };
 
