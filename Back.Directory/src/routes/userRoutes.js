@@ -6,7 +6,7 @@ router.get('/user',  controller.getUsers);
 
 router.get('/user/:id',  controller.getUserById);
 
-router.get('/users',  controller.getUserByCredentials);
+router.post('/users',  controller.getUserByCredentials);
 
 router.get('/company',  controller.getCompanies);
 
