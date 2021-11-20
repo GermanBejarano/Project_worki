@@ -40,7 +40,7 @@ exports.getCompanies = async (req, res, next) => {
         const companyResult = await companyQueries.getCompanies();
 
         result.state = true;
-        result.users = companyResult;
+        result.companies = companyResult;
         response.success(req, res, result, 201, 'successfully!');
     } catch (error) {
         console.log(error.message);
@@ -51,8 +51,8 @@ exports.getCompanies = async (req, res, next) => {
 exports.getUserByCredentials = async (req, res, next) => {
     var result = {};
     try {
-        const { user, pass } = req.body;
-        const userResult = await userQueries.getUserByCredentials(user, pass);
+        const { user, pass, nit } = req.body;
+        const userResult = await userQueries.getUserByCredentials(user, pass, nit);
         if (userResult.length > 0) {
             result.state = true;
             result.users = userResult;

@@ -11,7 +11,7 @@ const sqlQueries = {
         'c.name, c.nit, c.phone, c.address ' +
         'FROM user u ' +
         'JOIN company c ON c.id_company = u.id_company ' +
-        "WHERE u.email = ? AND u.pass = ? "+
+        "WHERE u.email = ? AND u.pass = ? AND c.nit = ? "+
         'ORDER BY u.id_user DESC ',
 };
 module.exports = sqlQueries;
