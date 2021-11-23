@@ -20,16 +20,19 @@ import {
 import avatar1 from "assets/img/avatars/avatar1.png";
 import avatar2 from "assets/img/avatars/avatar2.png";
 import avatar3 from "assets/img/avatars/avatar3.png";
+import { IoIosLogOut } from "react-icons/io";
 // Custom Icons
 import { ProfileIcon, SettingsIcon, SupportIcon, PersonIcon } from "components/Icons/Icons";
 // Custom Components
 import { ItemContent } from "components/Menu/ItemContent";
 import { ItemContentLogin } from "components/Menu/ItemContentLogin";
 import { SidebarResponsive } from "components/Sidebar/Sidebar";
+import IconBox from "components/Icons/IconBox";
 import PropTypes from "prop-types";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import routes from "routes.js";
+import ChangeUrl from '../../variables/ChangeUrl';
 
 export default function HeaderLinks(props) {
   const { variant, children, fixed, secondary, onOpen, ...rest } = props;
@@ -40,11 +43,18 @@ export default function HeaderLinks(props) {
   let mainText = useColorModeValue("gray.700", "gray.200");
   let navbarIcon = useColorModeValue("gray.500", "gray.200");
   let searchIcon = useColorModeValue("gray.700", "gray.200");
+  const notificationColor = useColorModeValue("gray.700", "white");
 
   if (secondary) {
     navbarIcon = "white";
     mainText = "white";
   }
+
+  const logOut = () => {
+    localStorage.setItem('UserInfo', JSON.stringify({}));
+    window.location.href = 'http://127.0.0.1:3000/#/auth/login';
+  };
+
   const settingsRef = React.useRef();
   return (
     <Flex
@@ -115,7 +125,7 @@ export default function HeaderLinks(props) {
 
       <Menu>
         <MenuButton>
-          <BellIcon color={navbarIcon} w="18px" h="18px"  me="16px"/>
+          <BellIcon color={navbarIcon} w="18px" h="18px" me="16px" />
         </MenuButton>
         <MenuList p="16px 8px">
           <Flex flexDirection="column">
@@ -154,8 +164,8 @@ export default function HeaderLinks(props) {
         <MenuButton>
           <PersonIcon
             cursor="pointer"
-            ms={{ base: "16px", xl: "0px" }}
-            me="16px"
+            ms={{ base: "0px", xl: "0px" }}
+            // me="16px"
             ref={settingsRef}
             onClick={props.onOpen}
             color={navbarIcon}
@@ -165,12 +175,25 @@ export default function HeaderLinks(props) {
         </MenuButton>
         <MenuList p="0px 0px">
           <Flex flexDirection="column">
-            <MenuItem borderRadius="8px">
-              <ItemContentLogin
-                boldInfo="Cerrar Sesion"
-                aSrc={avatar2}
-                
-              />
+            <MenuItem borderRadius="8px" onClick={logOut}>
+              <Flex flexDirection="row" justifyContent="space-between" w="100%">
+                <Text fontSize="14px" mb="5px" color={notificationColor} mr="10px">
+                  Cerrar Sesion
+                </Text>
+                <IconBox
+                  as="box"
+                  h={"30px"}
+                  w={"30px"}
+                  me="6px"
+                // color={iconTeal}
+                >
+                  <IoIosLogOut h={"15px"} w={"15px"} size="small" />
+                </IconBox>
+
+                {/* <ItemContentLogin
+                boldInfo="Cerrar Sesion"  
+              /> */}
+              </Flex>
             </MenuItem>
             {/* <MenuItem borderRadius="8px">
               <p>Cerrar Sesion</p>

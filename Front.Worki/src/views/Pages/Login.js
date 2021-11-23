@@ -66,16 +66,59 @@ function Login(props) {
             const serviceResult = await axios.post(`${process.env.REACT_APP_GATEWAY_DIRECTORY}/users`,
                 {
                     user: email,
-                    pass: pass
+                    pass: pass,
+                    nit: company,
                 });
-            
-                const response = serviceResult.data.body;
+
+            const response = serviceResult.data.body;
 
             console.log('serviceResult: ' + response.state);
-            if(response.state == true){
-                ChangeUrl(props, '/profile2')
-            }
+            console.log('serviceResult: ' + response.state);
+            console.log('serviceResult2: ' + JSON.stringify({
+                name: response.users[0].nameuser,
+                lastname: response.users[0].lastname,
+                email: response.users[0].email,
+                pass: response.users[0].pass,
+                rol: response.users[0].rol,
+                nit_company: company
+            }));
+            
+            if (response.state == true) {
 
+                const consultUserResult = await axios.post(`${process.env.REACT_APP_GATEWAY_WORKI}/user`,
+                    {
+                        name: response.users[0].nameuser,
+                        lastname: response.users[0].lastname,
+                        email: response.users[0].email,
+                        pass: response.users[0].pass,
+                        rol: response.users[0].rol,
+                        nit_company: company,
+                    });
+
+                const responseConsultUser = consultUserResult.data.body;
+
+                if (responseConsultUser.state == true) {
+
+                    const objUser = { 
+                        id_user: responseConsultUser.userid, 
+                        id_company: responseConsultUser.companyid,
+                        state: true 
+                    };
+                    
+                    console.log('USER: '+ JSON.stringify (responseConsultUser) +' - '+JSON.stringify(objUser));
+                    localStorage.setItem('UserInfo', JSON.stringify(objUser))
+                    if (responseConsultUser.newuser == true) {
+                        ChangeUrl(props, '/admin/profile2')
+                    } else {
+                        ChangeUrl(props, '/admin/feed')
+                    }
+                } else {
+                    alert('Usuario y/o constraseña incorrectas');
+                }
+
+            } else {
+                alert('Usuario y/o constraseña incorrectas');
+            }
         } catch (error) {
             console.log(error.message);
         }

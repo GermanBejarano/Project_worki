@@ -95,7 +95,7 @@ function Feed() {
     return (
         <Flex direction="column">
             <Box
-                mb={{ sm: "0px", md: "0px", xl: "0px" }}
+                mb={{ sm: "22px", md: "22px", xl: "22px" }}
                 borderRadius="15px"
                 px="0px"
                 display="flex"
@@ -194,7 +194,7 @@ function Feed() {
                                                             w={"30px"}
                                                             color={iconTeal}
                                                         >
-                                                            <AiOutlineLike h={"20px"} w={"20px"} color={iconTeal} />
+                                                            <AiOutlineLike h={"20px"} w={"20px"} color={iconTeal} style={{fontSize: '20px'}} />
                                                         </IconBox>
                                                         <Text fontSize="sm" color="gray.400" fontWeight="semibold" me="8px">
                                                             1
@@ -210,7 +210,7 @@ function Feed() {
                                                             // me="6px"
                                                             color={iconTeal}
                                                         >
-                                                            <MdFavoriteBorder h={"20px"} w={"20px"} color={iconTeal} />
+                                                            <MdFavoriteBorder h={"20px"} w={"20px"} color={iconTeal} style={{fontSize: '20px'}} />
                                                         </IconBox>
                                                         <Text fontSize="sm" color="gray.400" fontWeight="semibold" me="8px">
                                                             5
@@ -263,7 +263,7 @@ function Feed() {
                                                         me="6px"
                                                         color={iconTeal}
                                                     >
-                                                        <FaRegComment h={"15px"} w={"15px"} color={iconTeal} />
+                                                        <FaRegComment h={"15px"} w={"15px"} color={iconTeal} style={{fontSize: '20px'}} />
                                                     </IconBox>
                                                     <Text fontSize="sm" color="gray.400" fontWeight="semibold" me="8px">
                                                         Comentar
@@ -279,7 +279,7 @@ function Feed() {
                                                         me="6px"
                                                         color={iconTeal}
                                                     >
-                                                        <IoArrowRedoOutline h={"18px"} w={"18px"} color={iconTeal} />
+                                                        <IoArrowRedoOutline h={"18px"} w={"18px"} color={iconTeal} style={{fontSize: '20px'}} />
                                                     </IconBox>
                                                     <Text fontSize="sm" color="gray.400" fontWeight="semibold" me="8px">
                                                         Compartir
@@ -507,7 +507,7 @@ function Feed() {
                                             me="6px"
                                             color={iconTeal}
                                         >
-                                            <AiOutlineLike h={"15px"} w={"15px"} color={iconTeal} />
+                                            <AiOutlineLike h={"15px"} w={"15px"} color={iconTeal} style={{fontSize: '20px'}} />
                                         </IconBox>
                                     </Flex>
                                 </Flex>
@@ -542,7 +542,7 @@ function Feed() {
                                             me="6px"
                                             color={iconTeal}
                                         >
-                                            <MdFavoriteBorder h={"15px"} w={"15px"} color={iconTeal} />
+                                            <MdFavoriteBorder h={"15px"} w={"15px"} color={iconTeal} style={{fontSize: '20px'}} />
                                         </IconBox>
                                     </Flex>
                                 </Flex>

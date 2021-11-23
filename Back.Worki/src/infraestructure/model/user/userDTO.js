@@ -4,7 +4,8 @@ const userDTO = (
   email,
   pass,
   rol,
-  companyid
+  companyid,
+  status
 ) => {
 
   if (name == undefined || name === '' || name == null)
@@ -28,6 +29,13 @@ const userDTO = (
   if (num == undefined || num <= 0 || Number.isNaN(num))
     throw new Error('companyid is not valid');
 
+  var newStatus = true;
+  if (rol != undefined && rol != '' && rol != null && rol == 'admin'){
+    if(status != undefined && status != '' && status != null){
+      newStatus = status;
+    }
+  }
+
   return {
     nameuser: name,
     lastname: lastname,
@@ -38,6 +46,7 @@ const userDTO = (
     professional_tastes: null,
     not_bother: false,
     rol: rol,
+    status: newStatus,
     id_position: null,
     id_company: companyid,
     created: new Date(),
