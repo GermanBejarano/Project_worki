@@ -3,4 +3,5 @@ module.exports = {
     updateUser: require('./updateUser'),
     getUsers: require('./getUsers'),
     getUserById: require('./getUserById'),
+    getUserByCredentials: require('./getUserByCredentials'),
 };

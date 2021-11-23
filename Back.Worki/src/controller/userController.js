@@ -39,32 +39,45 @@ exports.getUserById = async (req, res, next) => {
 exports.createUser = async (req, res, next) => {
     var result = {};
     try {
-        const { name, lastname, email, pass, rol, nit_company } = req.body;
+        const { name, lastname, email, pass, rol, nit_company, status } = req.body;
 
         const companyResult = await companyQueries.getCompanyByNit(nit_company);
         if (companyResult.length == 0)
             throw new Error('Company not exists');
 
-        const companyId = userResult[0].id_company;
+        const recordResult = await userQueries.getUserByCredentials(email, pass);
 
-        const userRecord = userDTO(
-            name,
-            lastname,
-            email,
-            pass,
-            rol,
-            companyId
-        );
+        if (recordResult[0].value == 1){
+            result.state = true;
+            result.userid = recordResult[0].id_user;
+            result.companyid = recordResult[0].id_company;
+            result.newuser = false;
+        }else{
+            const companyId = companyResult[0].id_company;
 
-        await transactionCommands.beginTransaction();
-        const userResult = await userQueries.createUser(userRecord);
-        console.log('REQ3: ' + JSON.stringify(userResult));
-        console.log('REQ2: ' + JSON.stringify(req, getCircularReplacer()));
-        const userId = userResult[0];
-        await transactionCommands.commitTransaction();
-
-        result.state = true;
-        result.userid = userId;
+            const userRecord = userDTO(
+                name,
+                lastname,
+                email,
+                pass,
+                rol,
+                companyId,
+                status
+            );
+    
+            await transactionCommands.beginTransaction();
+            const userResult = await userQueries.createUser(userRecord);
+            console.log('REQ3: ' + JSON.stringify(userResult));
+            console.log('REQ2: ' + JSON.stringify(req, getCircularReplacer()));
+            const userId = userResult[0];
+            await transactionCommands.commitTransaction();
+    
+            result.state = true;
+            result.userid = userId;
+            result.companyid = companyId;
+            result.newuser = true;
+        }
+        
         response.success(req, res, result, 201, 'successfully! ');
     } catch (error) {
         console.log(error.message);
@@ -77,7 +90,7 @@ exports.updateUser = async (req, res, next) => {
     var result = {};
     try {
         const { id } = req.params;
-        const { name, lastname, email, pass, rol, companyid, img, state, professional_tastes, not_bother, id_position } = req.body;
+        const { name, lastname, email, pass, rol, companyid, img, state, professional_tastes, not_bother, id_position, status } = req.body;
 
         const consultUser = await userQueries.getUserById(id);
         if (consultUser.length == 0)
@@ -96,7 +109,8 @@ exports.updateUser = async (req, res, next) => {
             state,
             professional_tastes,
             not_bother,
-            id_position
+            id_position,
+            status
         );
 
         await transactionCommands.beginTransaction();
