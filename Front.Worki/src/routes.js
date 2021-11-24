@@ -12,6 +12,8 @@ import Events from "views/Pages/Events";
 import Feed from "views/Pages/Feed";
 import UpdateProfile from "views/Pages/UpdateProfile";
 import AddPost from "views/Pages/AddPost";
+import AddEvent from "views/Pages/AddEvent";
+import Group from "views/Pages/Group";
 
 import {
   HomeIcon,
@@ -85,6 +87,26 @@ var dashRoutes = [
     see: true,
   },
   {
+    path: "/addevent",
+    name: "AddEvent",
+    rtlName: "لوحة القيادة",
+    icon: <PersonIcon color="inherit" />,
+    secondaryNavbar: true,
+    component: AddEvent,
+    layout: "/admin",
+    see: false,
+  },
+  {
+    path: "/group",
+    name: "Grupos",
+    rtlName: "لوحة القيادة",
+    icon: <PersonIcon color="inherit" />,
+    secondaryNavbar: true,
+    component: Group,
+    layout: "/admin",
+    see: true,
+  },
+  {
     path: "/login",
     name: "Login",
     rtlName: "لوحة القيادة",
@@ -92,7 +114,7 @@ var dashRoutes = [
     secondaryNavbar: true,
     component: Login,
     layout: "/auth",
-    see: true,
+    see: false,
   },
 
   // {
