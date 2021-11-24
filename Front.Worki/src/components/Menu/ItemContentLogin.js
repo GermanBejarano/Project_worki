@@ -16,7 +16,7 @@ export function ItemContentLogin(props) {
         borderRadius="12px"
         me="16px"
       />
-      <Flex flexDirection="column" onClick={() => {location.href='http://127.0.0.1:3000/#/auth/login'}}>
+      <Flex flexDirection="column" onClick={() => {window.location.href='http://127.0.0.1:3000/#/auth/login'}}>
         <Text fontSize="14px" mb="5px" color={notificationColor}>
           <Text fontWeight="bold" fontSize="14px" as="span">
             {props.boldInfo}

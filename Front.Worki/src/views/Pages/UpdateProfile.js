@@ -41,7 +41,7 @@ import {
 } from "react-icons/fa";
 import { IoDocumentsSharp } from "react-icons/io5";
 
-function UpdateProfile() {
+function UpdateProfile(props) {
     // Chakra color mode
     const textColor = useColorModeValue("gray.700", "white");
     const bgProfile = useColorModeValue(

@@ -46,7 +46,7 @@ import 'jodit';
 import 'jodit/build/jodit.min.css';
 import JoditEditor from "jodit-react";
 
-function AddPost(props) {
+function AddEvent(props) {
     // Chakra color mode
     const textColor = useColorModeValue("gray.700", "white");
     const bgProfile = useColorModeValue(
@@ -411,4 +411,4 @@ function AddPost(props) {
     );
 }
 
-export default AddPost;
+export default AddEvent;
